@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Line-Following Robot Player</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div class="topbar">
+        <h1 data-i18n="h1">Line-Following Robot Player</h1>
+        <div class="lang">
+          <a id="lang-en" class="active">English</a><span>&middot;</span><a id="lang-zh">&#20013;&#25991;</a>
+        </div>
+      </div>
+      <p class="sub" data-i18n-html="sub">
+        The C++ engine in this repo simulates the analog car and exports its trajectory.
+        This page is a small player: it loads that exported data and animates it on a canvas.
+        It does not re-run the simulation &mdash; it only draws the precomputed frames.
+      </p>
+    </header>
+
+    <div class="stage">
+      <canvas id="view" width="760" height="480" aria-label="line-following trajectory player"></canvas>
+    </div>
+
+    <section class="controls">
+      <div class="group">
+        <span class="label" data-i18n="track">Track</span>
+        <button data-track="oval" class="active" data-i18n="oval">Oval</button>
+        <button data-track="wavy" data-i18n="wavy">Wavy</button>
+        <button data-track="figure8" data-i18n="fig8">Figure-8</button>
+      </div>
+
+      <div class="group">
+        <button id="play" class="primary" data-i18n="pause">Pause</button>
+        <button id="restart" data-i18n="restart">Restart</button>
+      </div>
+
+      <div class="group">
+        <span class="label" data-i18n="speed">Speed</span>
+        <input id="speed" type="range" min="0.25" max="3" step="0.05" value="1" />
+        <span id="speed-val" class="mono">1.00&times;</span>
+      </div>
+
+      <div class="group readout">
+        <span class="label" data-i18n="sensors">Sensors</span>
+        <span id="badge-left" class="badge off">L: &mdash;</span>
+        <span id="badge-right" class="badge off">R: &mdash;</span>
+      </div>
+
+      <div class="group">
+        <span class="label" data-i18n="frame">Frame</span>
+        <span id="frame-val" class="mono">0 / 0</span>
+      </div>
+    </section>
+
+    <section class="legend">
+      <h2 data-i18n="legendTitle">Legend</h2>
+      <ul>
+        <li><span class="dot green"></span><span data-i18n-html="legendGreen">Green dot: the sensor is <strong>on the line</strong>.</span></li>
+        <li><span class="dot red"></span><span data-i18n-html="legendRed">Red dot: the sensor has <strong>slipped off</strong> the line.</span></li>
+        <li data-i18n="legendBoth">Both sensors on the line: the car drives straight. Only one on the line: it pivots back toward that side.</li>
+      </ul>
+      <p class="note" data-i18n="note">
+        The motion shown here was computed by the C++ engine, not by this page. The real car
+        has no microcontroller: the same on/off decision is made by an LM393 comparator in
+        hardware, with no firmware. See the README for the circuit and the build.
+      </p>
+    </section>
+  </main>
+
+  <script>
+    // UI-chrome translations. The canvas itself draws no text labels (only the
+    // track line, the car and the sensor dots); everything textual is covered
+    // here and switches with the language toggle.
+    window.I18N = {
+      en: {
+        pageTitle: "Line-Following Robot Player",
+        h1: "Line-Following Robot Player",
+        sub: "The C++ engine in this repo simulates the analog car and exports its trajectory. " +
+             "This page is a small player: it loads that exported data and animates it on a canvas. " +
+             "It does not re-run the simulation &mdash; it only draws the precomputed frames.",
+        track: "Track", oval: "Oval", wavy: "Wavy", fig8: "Figure-8",
+        pause: "Pause", play: "Play", restart: "Restart",
+        speed: "Speed", sensors: "Sensors", frame: "Frame",
+        on: "ON", off: "off", left: "L", right: "R",
+        legendTitle: "Legend",
+        legendGreen: "Green dot: the sensor is <strong>on the line</strong>.",
+        legendRed: "Red dot: the sensor has <strong>slipped off</strong> the line.",
+        legendBoth: "Both sensors on the line: the car drives straight. Only one on the line: it pivots back toward that side.",
+        note: "The motion shown here was computed by the C++ engine, not by this page. The real car " +
+              "has no microcontroller: the same on/off decision is made by an LM393 comparator in " +
+              "hardware, with no firmware. See the README for the circuit and the build."
+      },
+      zh: {
+        pageTitle: "循迹小车播放器",
+        h1: "循迹小车播放器",
+        sub: "仓库里的 C++ 引擎仿真这台模拟小车，并导出它的轨迹。" +
+             "这个页面只是一个轻量播放器：它加载那份导出数据，在画布上动画播放。" +
+             "它不重新跑仿真——只是把预先算好的帧画出来。",
+        track: "赛道", oval: "椭圆", wavy: "波浪", fig8: "8 字",
+        pause: "暂停", play: "播放", restart: "重播",
+        speed: "速度", sensors: "传感器", frame: "帧",
+        on: "在线", off: "离线", left: "左", right: "右",
+        legendTitle: "图例",
+        legendGreen: "绿点：传感器<strong>在线上</strong>。",
+        legendRed: "红点：传感器<strong>滑出了</strong>线外。",
+        legendBoth: "两个传感器都在线上：小车直行。只有一个在线上：小车朝那一侧拐回去。",
+        note: "这里看到的运动是 C++ 引擎算出来的，不是这个页面算的。" +
+              "真实小车没有单片机：同样的开/关判断由 LM393 比较器在硬件里完成，没有任何固件。电路和装配见 README。"
+      }
+    };
+    window.LANG = "en";
+    function applyLang() {
+      var d = window.I18N[window.LANG];
+      document.title = d.pageTitle;
+      document.documentElement.lang = (window.LANG === "zh") ? "zh" : "en";
+      document.querySelectorAll("[data-i18n]").forEach(function (el) {
+        var k = el.getAttribute("data-i18n"); if (d[k] != null) el.textContent = d[k];
+      });
+      document.querySelectorAll("[data-i18n-html]").forEach(function (el) {
+        var k = el.getAttribute("data-i18n-html"); if (d[k] != null) el.innerHTML = d[k];
+      });
+      document.getElementById("lang-en").classList.toggle("active", window.LANG === "en");
+      document.getElementById("lang-zh").classList.toggle("active", window.LANG === "zh");
+      if (typeof window.refreshDynamicLang === "function") window.refreshDynamicLang();
+    }
+    document.getElementById("lang-en").addEventListener("click", function (e) { e.preventDefault(); window.LANG = "en"; applyLang(); });
+    document.getElementById("lang-zh").addEventListener("click", function (e) { e.preventDefault(); window.LANG = "zh"; applyLang(); });
+    applyLang();
+  </script>
+  <script src="player.js"></script>
+</body>
+</html>

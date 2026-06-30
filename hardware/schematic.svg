@@ -1,0 +1,146 @@
+<svg viewBox="0 0 900 580" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">
+  <rect x="0" y="0" width="900" height="580" fill="#ffffff"/>
+  <text x="30" y="34" fill="#0f172a" font-size="16" font-weight="700">Analog line-following car — left channel (left sensor → right motor, cross-wired)</text>
+
+  <!-- ============ wires (inherit stroke; no &lt;style&gt; so GitHub can't blank it) ============ -->
+  <g stroke="#1f2937" stroke-width="2" fill="none" stroke-linecap="round">
+    <!-- power rails -->
+    <line x1="70" y1="80" x2="840" y2="80" stroke-width="2.5"/>
+    <line x1="70" y1="500" x2="840" y2="500" stroke-width="2.5"/>
+    <!-- battery + switch -->
+    <line x1="70" y1="80" x2="70" y2="150"/>
+    <line x1="70" y1="162" x2="86" y2="148"/>
+    <line x1="70" y1="186" x2="70" y2="250"/>
+    <line x1="58" y1="250" x2="82" y2="250"/><line x1="64" y1="262" x2="76" y2="262"/>
+    <line x1="58" y1="274" x2="82" y2="274"/><line x1="64" y1="286" x2="76" y2="286"/>
+    <line x1="70" y1="286" x2="70" y2="500"/>
+    <!-- sensor divider -->
+    <line x1="170" y1="80" x2="170" y2="120"/>
+    <line x1="170" y1="176" x2="170" y2="240"/>
+    <line x1="170" y1="296" x2="170" y2="500"/>
+    <!-- threshold pot -->
+    <line x1="280" y1="80" x2="280" y2="150"/>
+    <line x1="280" y1="220" x2="280" y2="500"/>
+    <line x1="266" y1="185" x2="252" y2="185"/>
+    <!-- pot wiper -> non-inverting (+) upper input -->
+    <line x1="252" y1="185" x2="348" y2="185"/>
+    <line x1="348" y1="185" x2="348" y2="200"/>
+    <line x1="348" y1="200" x2="360" y2="200"/>
+    <!-- sensor node -> inverting (-) lower input -->
+    <line x1="170" y1="210" x2="330" y2="210"/>
+    <line x1="330" y1="210" x2="330" y2="280"/>
+    <line x1="330" y1="280" x2="360" y2="280"/>
+    <!-- comparator supply stubs -->
+    <line x1="405" y1="205" x2="405" y2="80" stroke-dasharray="3,3"/>
+    <line x1="405" y1="275" x2="405" y2="500" stroke-dasharray="3,3"/>
+    <!-- output node -->
+    <line x1="470" y1="240" x2="616" y2="240"/>
+    <!-- pull-up to +3V -->
+    <line x1="510" y1="240" x2="510" y2="194"/>
+    <line x1="510" y1="150" x2="510" y2="80"/>
+    <!-- indicator LED branch: +3V -> R -> LED -> output -->
+    <line x1="600" y1="80" x2="600" y2="120"/>
+    <line x1="600" y1="150" x2="600" y2="168"/>
+    <line x1="600" y1="192" x2="600" y2="240"/>
+    <!-- base resistor -> NPN -->
+    <line x1="664" y1="240" x2="672" y2="240"/>
+    <line x1="672" y1="218" x2="672" y2="262"/>
+    <line x1="672" y1="228" x2="708" y2="206"/>
+    <line x1="672" y1="252" x2="708" y2="274"/>
+    <!-- collector -> motor -> +3V -->
+    <line x1="708" y1="206" x2="708" y2="178"/>
+    <line x1="708" y1="124" x2="708" y2="80"/>
+    <!-- emitter -> GND -->
+    <line x1="708" y1="274" x2="708" y2="500"/>
+    <!-- flyback diode across motor -->
+    <line x1="708" y1="178" x2="770" y2="178"/>
+    <line x1="770" y1="178" x2="770" y2="162"/>
+    <line x1="770" y1="136" x2="770" y2="80"/>
+    <!-- 0.1 uF decoupling cap across the supply rails -->
+    <line x1="815" y1="80" x2="815" y2="266"/>
+    <line x1="815" y1="274" x2="815" y2="500"/>
+    <line x1="801" y1="266" x2="829" y2="266"/>
+    <line x1="801" y1="274" x2="829" y2="274"/>
+  </g>
+
+  <!-- ============ components (white fill, dark outline) ============ -->
+  <g fill="#ffffff" stroke="#1f2937" stroke-width="2">
+    <rect x="156" y="120" width="28" height="56"/>            <!-- LDR -->
+    <rect x="156" y="240" width="28" height="56"/>            <!-- divider R -->
+    <rect x="266" y="150" width="28" height="70"/>            <!-- threshold pot -->
+    <path d="M 360 170 L 360 310 L 470 240 Z"/>               <!-- comparator -->
+    <rect x="496" y="150" width="28" height="44"/>            <!-- pull-up R -->
+    <rect x="586" y="120" width="28" height="30"/>            <!-- LED series R -->
+    <rect x="616" y="226" width="48" height="28"/>            <!-- base R -->
+    <circle cx="690" cy="240" r="30"/>                        <!-- NPN envelope -->
+    <circle cx="708" cy="150" r="26"/>                        <!-- motor -->
+    <path d="M 588 168 L 612 168 L 600 192 Z"/>               <!-- indicator LED (anode top, points down to output) -->
+    <path d="M 758 162 L 782 162 L 770 138 Z"/>               <!-- flyback diode (points up to +3V) -->
+  </g>
+
+  <!-- ============ filled marks: junctions, arrowheads, diode bars ============ -->
+  <g fill="#1f2937" stroke="none">
+    <!-- junction dots -->
+    <circle cx="170" cy="210" r="4"/>
+    <circle cx="510" cy="240" r="4"/>
+    <circle cx="600" cy="240" r="4"/>
+    <circle cx="708" cy="178" r="4"/>
+    <circle cx="170" cy="80" r="3.5"/><circle cx="280" cy="80" r="3.5"/>
+    <circle cx="405" cy="80" r="3.5"/><circle cx="510" cy="80" r="3.5"/><circle cx="600" cy="80" r="3.5"/><circle cx="708" cy="80" r="3.5"/>
+    <circle cx="170" cy="500" r="3.5"/><circle cx="280" cy="500" r="3.5"/>
+    <circle cx="405" cy="500" r="3.5"/><circle cx="708" cy="500" r="3.5"/>
+    <circle cx="815" cy="80" r="3.5"/><circle cx="815" cy="500" r="3.5"/>
+    <circle cx="70" cy="162" r="2.5"/><circle cx="70" cy="186" r="2.5"/>
+    <!-- emitter arrow -->
+    <polygon points="708,274 698,270 704,264"/>
+    <!-- LDR light arrows -->
+    <polygon points="196,116 188,118 192,123"/>
+    <polygon points="200,130 192,132 196,137"/>
+    <!-- pot wiper arrow -->
+    <polygon points="252,185 260,181 260,189"/>
+    <!-- LED light arrows -->
+    <polygon points="620,150 627,146 626,153"/>
+    <polygon points="625,162 632,158 631,165"/>
+  </g>
+  <!-- diode cathode bars + LDR/LED arrow shafts (thin lines) -->
+  <g stroke="#1f2937" stroke-width="2" fill="none">
+    <line x1="588" y1="192" x2="612" y2="192"/>               <!-- indicator LED cathode bar -->
+    <line x1="758" y1="136" x2="782" y2="136"/>               <!-- flyback cathode bar -->
+    <line x1="196" y1="116" x2="182" y2="128"/>               <!-- LDR light arrow shafts -->
+    <line x1="200" y1="130" x2="186" y2="142"/>
+    <line x1="620" y1="150" x2="610" y2="162"/>               <!-- LED light arrow shafts -->
+    <line x1="625" y1="162" x2="615" y2="174"/>
+  </g>
+
+  <!-- ============ labels ============ -->
+  <g fill="#1f2937" font-size="13">
+    <text x="30" y="84">+3 V</text>
+    <text x="30" y="504">GND</text>
+    <text x="372" y="236" font-size="12">½ LM393</text>
+    <text x="345" y="206">+</text>
+    <text x="345" y="286">−</text>
+    <text x="704" y="155" text-anchor="middle">M</text>
+  </g>
+  <g fill="#475569" font-size="11">
+    <text x="150" y="150" text-anchor="end">left LDR</text>
+    <text x="178" y="206">sensor</text>
+    <text x="148" y="272" text-anchor="end">R</text>
+    <text x="300" y="178">threshold</text>
+    <text x="300" y="192">pot</text>
+    <text x="412" y="120">V+</text>
+    <text x="412" y="470">V−</text>
+    <text x="530" y="178">pull-up</text>
+    <text x="622" y="126">LED</text>
+    <text x="624" y="222">base R</text>
+    <text x="726" y="244">NPN</text>
+    <text x="668" y="150" text-anchor="end">right motor</text>
+    <text x="788" y="160">flyback</text>
+    <text x="86" y="272">2×AA</text>
+    <text x="80" y="156">SW</text>
+    <text x="796" y="278" text-anchor="end">0.1 µF</text>
+  </g>
+
+  <text x="30" y="536" fill="#475569" font-size="11">Reconstructed from the board. The left channel is shown (left sensor → right motor); the right channel</text>
+  <text x="30" y="550" fill="#475569" font-size="11">mirrors it (right sensor → left motor), sharing the dual LM393 and the 3 V supply. This cross-wiring —</text>
+  <text x="30" y="564" fill="#475569" font-size="11">each sensor driving the opposite motor — makes the loop corrective: a sensor leaving the line cuts the far motor.</text>
+</svg>

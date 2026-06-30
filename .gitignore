@@ -1,0 +1,9 @@
+# macOS
+.DS_Store
+
+# editor / OS noise
+*.swp
+Thumbs.db
+
+# build output: compiled binaries and trajectory CSVs
+build/
